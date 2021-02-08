@@ -1,0 +1,43 @@
+image: cirrusci/flutter:stable
+
+stages:
+  - analyze
+  - test
+  - build
+
+before_script:
+  - flutter pub get
+  - flutter clean
+
+analyze:
+  stage: analyze
+
+  script:
+    - echo analyzing flutter aplication
+    - echo analyzing success
+
+  tags:
+    - docker
+
+unit_test:
+  stage: test
+
+  script:
+    - flutter test test/*
+
+  tags:
+    - docker
+
+build:
+  stage: build
+
+  script:
+    - flutter clean
+    - flutter build apk --split-per-abi
+
+  tags:
+    - docker
+
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/
