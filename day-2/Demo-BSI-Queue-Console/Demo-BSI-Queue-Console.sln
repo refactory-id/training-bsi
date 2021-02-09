@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo-BSI-Queue-Console", "Demo-BSI-Queue-Console\Demo-BSI-Queue-Console.csproj", "{D2BE1AE5-4251-4BC0-9016-2C681FE72931}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSI-Demo-Queue-API", "BSI-Demo-Queue-API\BSI-Demo-Queue-API.csproj", "{E902DC9A-F102-4CAA-8CC3-37C15CE0EB09}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2BE1AE5-4251-4BC0-9016-2C681FE72931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2BE1AE5-4251-4BC0-9016-2C681FE72931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2BE1AE5-4251-4BC0-9016-2C681FE72931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2BE1AE5-4251-4BC0-9016-2C681FE72931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E902DC9A-F102-4CAA-8CC3-37C15CE0EB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E902DC9A-F102-4CAA-8CC3-37C15CE0EB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E902DC9A-F102-4CAA-8CC3-37C15CE0EB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E902DC9A-F102-4CAA-8CC3-37C15CE0EB09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07944DD9-00E2-40C1-B502-54C5D9279A12}
+	EndGlobalSection
+EndGlobal
