@@ -342,7 +342,7 @@ Dan hasil dari dua pengujian diatas didapatkan sebuah hasil seperti dibawah ini:
 
 ![image](screenshots/02.png)
 
-Diketahui bahwa pemanggilan API secara Asynchronouse membutuhkan waktu yang lebih lama daripada pemanggilan API secara Concurent.
+Diketahui bahwa pemanggilan API secara Synchronous membutuhkan waktu yang lebih lama daripada pemanggilan API secara Concurrent.
 
 ## State Benchmarking
 

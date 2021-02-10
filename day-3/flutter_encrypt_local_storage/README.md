@@ -6,12 +6,14 @@ Enkripsi data yang disimpan pada local storage pada aplikasi Flutter, hal ini sa
 
 Local storage merupakan fitur yang tersedia di semua platfrom, local storage berguna untuk menyimpan data secara local yang berbasis key dan value. Penyimpanan local storage bersifat tetap namun user dapat menghapusnya dengan cara clear cache, clear data atapun dengan uninstall aplikasi. 
 
-Local storage cukup berguna untuk menyimpan session dimana user tidak perlu login kembali ketika sudah pernah login sebelumnya, namun local storage belum tentu menyimpan data bentuk yang aman. Untuk menjaga keamanan data perlu dilakukan encryption yang berarti data yang disimpan akan di encrypt dalam bentuk yang tidak semua orang mengetahui data aslinya dan ketika data tersebut dibutuhkan maka data yang dihasilkan akan di decrypt dalam bentuk yang sudah bisa dibaca oleh orang. Hindari penyimpanan data dalam bentuk Hash seperti: md5, SHA, dsb. Penyimpanan data lokal dalam bentuk hash akan menyulitkan server ketika data yang dikirimkan adalah dalam bentuk hash, karena data dalam bentuk hash sulit atau bahkan tidak bisa di decrypt.
+Local storage cukup berguna untuk menyimpan session dimana user tidak perlu login kembali ketika sudah pernah login sebelumnya, namun local storage belum tentu menyimpan data ke dalam bentuk yang aman. Untuk menjaga keamanan data perlu dilakukan encryption yang berarti data yang disimpan akan di encrypt dalam bentuk yang tidak semua orang mengetahui data aslinya dan ketika data tersebut dibutuhkan maka data yang dihasilkan akan di decrypt dalam bentuk yang sudah bisa dibaca oleh orang. Hindari penyimpanan data dalam bentuk Hash seperti: md5, SHA, dsb. Penyimpanan data lokal dalam bentuk hash akan menyulitkan server ketika data yang dikirimkan adalah dalam bentuk hash, karena data dalam bentuk hash sulit atau bahkan tidak bisa di decrypt.
 
 Beberapa local storage di dalam aplikasi Flutter:
 
-1. SharedPrefences
-2. Hive
+1. flutter_secure_storage
+2. localstorage
+1. shared_prefences
+2. hive
 3. Dsb.
 
 ### __Local Storage Hive__
@@ -87,7 +89,7 @@ box.put(123, 'test');
 box.putAll({'key1': 'value1', 42: 'life'});
 ```
 
-Membaca data pada Hive dapat dilakukan dengan menggunakan perintah get yang meminta argument key dan secara option defaultValue untuk memberikan nilai selain null ketika datanya null, kurang lebih seperti bawah ini untuk melakukan read data pada Hive:
+Membaca data pada Hive dapat dilakukan dengan menggunakan perintah get yang meminta argument key dan secara optional defaultValue untuk memberikan nilai selain null ketika datanya null, kurang lebih seperti bawah ini untuk melakukan read data pada Hive:
 
 ```dart
 final box = Hive.box('myBox');

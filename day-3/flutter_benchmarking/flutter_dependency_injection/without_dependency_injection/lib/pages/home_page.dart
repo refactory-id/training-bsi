@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> implements TodoView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter with Depedency Injection"),
+        title: Text("Flutter without Depedency Injection"),
       ),
       body: (_state is Loading)
           ? Center(
