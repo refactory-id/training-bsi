@@ -5,12 +5,14 @@ class TextInputWidget extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final bool isPassword;
+  final Function(String) onChange;
   final TextInputType inputType;
 
   TextInputWidget(
       {@required this.label,
       @required this.controller,
       @required this.inputType,
+      this.onChange,
       this.isPassword = false});
 
   @override
@@ -21,6 +23,7 @@ class TextInputWidget extends StatelessWidget {
         controller: controller,
         style: TextStyle(color: colorTextSecondary, fontSize: 16),
         obscureText: isPassword,
+        onChanged: onChange,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(16),
             labelText: label,

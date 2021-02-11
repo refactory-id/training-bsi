@@ -10,9 +10,15 @@ class AuthProvider extends BaseProvider {
   AuthProvider(this._auth, this._reference);
 
   String _name = "", _email = "", _password = "";
+  
+  set name(String value) => _name = value ?? "";
+  set email(String value) => _email = value ?? "";
+  set password(String value) => _password = value ?? "";
+
   String get name => _name;
   String get email => _email;
   String get password => _password;
+
   bool get isLogged => _auth.currentUser != null;
 
   void register(

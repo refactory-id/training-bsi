@@ -15,24 +15,20 @@ class ChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                user.name,
-                style: TextStyle(color: colorTextPrimary, fontSize: 20),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Text(
-                user.email,
-                style: TextStyle(color: colorTextSecondary, fontSize: 16),
-              )
-            ],
+          child: Text(
+            user.name,
+            style: TextStyle(color: colorTextPrimary, fontSize: 20),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            user.email,
+            style: TextStyle(color: colorTextSecondary, fontSize: 16),
           ),
         ),
         Row(

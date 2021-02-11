@@ -32,14 +32,18 @@ class RegisterPage extends StatelessWidget {
                   TextInputWidget(
                       label: "Nama Lengkap",
                       controller: nameController,
+                      onChange: (value) => auth.name = nameController.text,
                       inputType: TextInputType.name),
                   TextInputWidget(
                       label: "Email",
                       controller: emailController,
+                      onChange: (value) => auth.email = emailController.text,
                       inputType: TextInputType.emailAddress),
                   TextInputWidget(
                     label: "Password",
                     controller: passwordController,
+                    onChange: (value) =>
+                        auth.password = passwordController.text,
                     inputType: TextInputType.visiblePassword,
                     isPassword: true,
                   ),

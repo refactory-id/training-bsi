@@ -93,10 +93,12 @@ class _LoginPageState extends State<LoginPage> {
             TextInputWidget(
                 label: "Email",
                 controller: emailController,
+                onChange: (value) => auth.email = emailController.text,
                 inputType: TextInputType.emailAddress),
             TextInputWidget(
               label: "Password",
               controller: passwordController,
+              onChange: (value) => auth.password = passwordController.text,
               inputType: TextInputType.visiblePassword,
               isPassword: true,
             ),
