@@ -1,7 +1,7 @@
 import 'package:flutter_clean_architecture/domain/entities/service_entity.dart';
 import 'package:flutter_clean_architecture/domain/entities/courier_entity.dart';
 import 'package:flutter_clean_architecture/domain/entities/cost_entity.dart';
-import 'package:flutter_clean_architecture/domain/persistences/mappers/contracts/courier_mapper.dart';
+import 'package:flutter_clean_architecture/usecase/mappers/courier_mapper.dart';
 
 class CourierMapperImpl implements CourierMapper {
   @override

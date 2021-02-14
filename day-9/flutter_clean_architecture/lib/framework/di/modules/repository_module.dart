@@ -1,5 +1,5 @@
-import 'package:flutter_clean_architecture/data/persistences/repositories/raja_ongkir_repository.dart';
-import 'package:flutter_clean_architecture/domain/persistences/repositories/contracts/raja_ongkir_repository.dart';
+import 'package:flutter_clean_architecture/data/repositories/raja_ongkir_repository.dart';
+import 'package:flutter_clean_architecture/usecase/repositories/raja_ongkir_repository.dart';
 import 'package:injector/injector.dart';
 
 class RepositoryModule {

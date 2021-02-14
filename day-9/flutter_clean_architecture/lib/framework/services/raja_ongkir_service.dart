@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_clean_architecture/data/infrastructures/contracts/raja_ongkir_service.dart';
+import 'package:flutter_clean_architecture/data/services/raja_ongkir_service.dart';
 
 class RajaOngkirServiceImpl extends RajaOngkirService {
   final Dio _dio;

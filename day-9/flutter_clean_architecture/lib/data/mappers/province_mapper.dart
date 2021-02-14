@@ -1,5 +1,5 @@
 import 'package:flutter_clean_architecture/domain/entities/province_entity.dart';
-import 'package:flutter_clean_architecture/domain/persistences/mappers/contracts/province_mapper.dart';
+import 'package:flutter_clean_architecture/usecase/mappers/province_mapper.dart';
 
 class ProvinceMapperImpl implements ProvinceMapper {
   @override

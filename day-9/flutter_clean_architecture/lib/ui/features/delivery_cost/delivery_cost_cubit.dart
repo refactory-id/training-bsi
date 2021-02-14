@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/domain/entities/courier_entity.dart';
 import 'package:flutter_clean_architecture/domain/entities/service_entity.dart';
-import 'package:flutter_clean_architecture/domain/usecase/contracts/calculate_cost_use_case.dart';
+import 'package:flutter_clean_architecture/domain/usecase/calculate_cost_use_case.dart';
 import 'package:flutter_clean_architecture/ui/features/delivery_cost/delivery_cost_state.dart';
 
 class DeliveryCostCubit extends Cubit<DeliveryCostState> {

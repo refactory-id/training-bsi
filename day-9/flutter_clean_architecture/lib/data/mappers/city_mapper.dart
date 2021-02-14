@@ -1,5 +1,5 @@
 import 'package:flutter_clean_architecture/domain/entities/city_entity.dart';
-import 'package:flutter_clean_architecture/domain/persistences/mappers/contracts/city_mapper.dart';
+import 'package:flutter_clean_architecture/usecase/mappers/city_mapper.dart';
 
 class CityMapperImpl implements CityMapper {
   @override

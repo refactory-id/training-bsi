@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_clean_architecture/data/infrastructures/contracts/raja_ongkir_service.dart';
-import 'package:flutter_clean_architecture/framework/infrastructures/services/raja_ongkir_service.dart';
+import 'package:flutter_clean_architecture/data/services/raja_ongkir_service.dart';
+import 'package:flutter_clean_architecture/framework/services/raja_ongkir_service.dart';
 import 'package:flutter_clean_architecture/framework/loggers/interceptor_logger.dart';
 import 'package:flutter_clean_architecture/main.dart';
 import 'package:injector/injector.dart';
