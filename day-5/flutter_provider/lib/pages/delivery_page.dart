@@ -13,12 +13,14 @@ import 'package:flutter_provider/widgets/text_input_widget.dart';
 import 'package:provider/provider.dart';
 
 class DeliveryPage extends StatelessWidget {
+  final _weightController = TextEditingController(text: "0");
+
   @override
   Widget build(BuildContext context) {
-    final weightController = TextEditingController(text: "0");
     final width = (MediaQuery.of(context).size.width - 56);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("Provider in Shipping Charges"),
         centerTitle: true,
@@ -62,7 +64,7 @@ class DeliveryPage extends StatelessWidget {
                               .map<DropdownMenuItemWidget<Province>>(
                                   (province) =>
                                       DropdownMenuItemWidget<Province>(
-                                        text: province.name,
+                                        text: "Provinsi ${province.name}",
                                         value: province,
                                         width: width,
                                       ))
@@ -73,7 +75,7 @@ class DeliveryPage extends StatelessWidget {
                         items: provider.cities
                             .map<DropdownMenuItemWidget<City>>(
                                 (city) => DropdownMenuItemWidget<City>(
-                                      text: city.name,
+                                      text: "${city.type} ${city.name}",
                                       value: city,
                                       width: width,
                                     ))
@@ -90,7 +92,7 @@ class DeliveryPage extends StatelessWidget {
                               .map<DropdownMenuItemWidget<Province>>(
                                   (province) =>
                                       DropdownMenuItemWidget<Province>(
-                                        text: province.name,
+                                        text: "Provinsi ${province.name}",
                                         value: province,
                                         width: width,
                                       ))
@@ -102,7 +104,7 @@ class DeliveryPage extends StatelessWidget {
                         items: provider.destinationCities
                             .map<DropdownMenuItemWidget<City>>(
                                 (city) => DropdownMenuItemWidget<City>(
-                                      text: city.name,
+                                      text: "${city.type} ${city.name}",
                                       value: city,
                                       width: width,
                                     ))
@@ -113,7 +115,7 @@ class DeliveryPage extends StatelessWidget {
                       ),
                       TextInputWidget(
                           label: "Berat barang dalam satuan gram",
-                          controller: weightController,
+                          controller: _weightController,
                           inputType: TextInputType.number),
                       (state is Loading)
                           ? Padding(
@@ -124,7 +126,7 @@ class DeliveryPage extends StatelessWidget {
                               text: "CALCULATE COST",
                               onClick: () {
                                 final weight =
-                                    int.tryParse(weightController.text) ?? 0;
+                                    int.tryParse(_weightController.text) ?? 0;
 
                                 if (weight >= 100) {
                                   Navigator.push(

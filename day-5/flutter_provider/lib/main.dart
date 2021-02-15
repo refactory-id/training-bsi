@@ -35,7 +35,7 @@ void main() {
       return response; // continue
     }, onError: (DioError e) async {
       print("###### ERROR ######");
-      print("ERROR: $e");
+      print("ERROR: ${e.response.data}");
       return e;
     }));
   }

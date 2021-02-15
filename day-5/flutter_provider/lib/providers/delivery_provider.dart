@@ -73,21 +73,28 @@ class DeliveryProvider extends ChangeNotifier {
     });
   }
 
-  Future<List<dynamic>> getAllRegion() {
+  Future<List<Province>> getAllRegion() {
     return _repository.getAllProvinces().then((value) async {
-      _provinces = value;
-      _destinationProvinces = _provinces;
+      try {
+        _provinces = value;
+        _destinationProvinces = _provinces;
 
-      _selectedProvince = _provinces.first;
-      _selectedDestinationProvince = _selectedProvince;
+        _selectedProvince = _provinces.first;
+        _selectedDestinationProvince = _selectedProvince;
 
-      _cities = await _repository.getAllCitiesByProvince(_selectedProvince.id);
-      _destinationCities = _cities;
+        _cities =
+            await _repository.getAllCitiesByProvince(_selectedProvince.id);
+        _destinationCities = _cities;
 
-      _selectedCity = _cities.first;
-      _selectedDestinationCity = _selectedCity;
+        _selectedCity = _cities.first;
+        _selectedDestinationCity = _selectedCity;
 
-      return value;
+        return value;
+      } catch (e) {
+        return value;
+      }
+    }).catchError((e) {
+      print(e);
     });
   }
 
