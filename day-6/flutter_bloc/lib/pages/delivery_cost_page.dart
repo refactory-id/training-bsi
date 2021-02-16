@@ -36,67 +36,69 @@ class DeliveryCostPage extends StatelessWidget {
           } else if (state is ErrorState) {
             return ExceptionWidget(message: state.message);
           } else if (state is SuccessState) {
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                      "Alamat penerima: ${origin.type} ${origin.name}, ${origin.province}"),
-                ),
-                Icon(
-                  Icons.swap_calls,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                      "Alamat pengirim: ${destination.type} ${destination.name}, ${destination.province}"),
-                ),
-                DropdownWidget<DeliveryCost>(
-                  items: state.couriers
-                      .map<DropdownMenuItemWidget<DeliveryCost>>(
-                          (courier) => DropdownMenuItemWidget<DeliveryCost>(
-                                text: courier.code.toUpperCase(),
-                                value: courier,
-                                context: context,
-                              ))
-                      .toList(),
-                  value: state.selectedCourier,
-                  onChanged: (courier) => context
-                      .read<DeliveryCostBloc>()
-                      .add(SelectCourierEvent(courier)),
-                ),
-                state.services.isNotEmpty
-                    ? DropdownWidget<Cost>(
-                        items: state.services
-                            .map<DropdownMenuItemWidget<Cost>>((item) {
-                          final cost = item.cost.first;
-
-                          return DropdownMenuItemWidget(
-                              text:
-                                  "${item.service}: IDR ${cost.value}, etd: ${cost.etd}",
-                              value: item,
-                              context: context);
-                        }).toList(),
-                        value: state.selectedService,
-                        onChanged: (service) => context
-                            .read<DeliveryCostBloc>()
-                            .add(SelectServiceEvent(service)),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          "Service tidak tersedia",
-                          style:
-                              TextStyle(fontSize: 14, color: Colors.red[900]),
-                        ),
-                      ),
-                if (state.services.isNotEmpty)
-                  ButtonWidget(
-                    text:
-                        "CHECKOUT IDR ${state.selectedService.cost.first.value}",
-                    onClick: () {},
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                        "Alamat penerima: ${origin.type} ${origin.name}, ${origin.province}"),
                   ),
-              ],
+                  Icon(
+                    Icons.swap_calls,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                        "Alamat pengirim: ${destination.type} ${destination.name}, ${destination.province}"),
+                  ),
+                  DropdownWidget<DeliveryCost>(
+                    items: state.couriers
+                        .map<DropdownMenuItemWidget<DeliveryCost>>(
+                            (courier) => DropdownMenuItemWidget<DeliveryCost>(
+                                  text: courier.code.toUpperCase(),
+                                  value: courier,
+                                  context: context,
+                                ))
+                        .toList(),
+                    value: state.selectedCourier,
+                    onChanged: (courier) => context
+                        .read<DeliveryCostBloc>()
+                        .add(SelectCourierEvent(courier)),
+                  ),
+                  state.services.isNotEmpty
+                      ? DropdownWidget<Cost>(
+                          items: state.services
+                              .map<DropdownMenuItemWidget<Cost>>((item) {
+                            final cost = item.cost.first;
+
+                            return DropdownMenuItemWidget(
+                                text:
+                                    "${item.service}: IDR ${cost.value}, etd: ${cost.etd}",
+                                value: item,
+                                context: context);
+                          }).toList(),
+                          value: state.selectedService,
+                          onChanged: (service) => context
+                              .read<DeliveryCostBloc>()
+                              .add(SelectServiceEvent(service)),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            "Service tidak tersedia",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.red[900]),
+                          ),
+                        ),
+                  if (state.services.isNotEmpty)
+                    ButtonWidget(
+                      text:
+                          "CHECKOUT IDR ${state.selectedService.cost.first.value}",
+                      onClick: () {},
+                    ),
+                ],
+              ),
             );
           }
 
