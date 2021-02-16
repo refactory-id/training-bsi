@@ -20,8 +20,6 @@ class DeliveryCostPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = (MediaQuery.of(context).size.width - 56);
-
     context
         .read<DeliveryCostBloc>()
         .add(CalculateCostEvent(origin.id, destination.id, weight));
@@ -59,7 +57,7 @@ class DeliveryCostPage extends StatelessWidget {
                           (courier) => DropdownMenuItemWidget<DeliveryCost>(
                                 text: courier.code.toUpperCase(),
                                 value: courier,
-                                width: width,
+                                context: context,
                               ))
                       .toList(),
                   value: state.selectedCourier,
@@ -77,7 +75,7 @@ class DeliveryCostPage extends StatelessWidget {
                               text:
                                   "${item.service}: IDR ${cost.value}, etd: ${cost.etd}",
                               value: item,
-                              width: width);
+                              context: context);
                         }).toList(),
                         value: state.selectedService,
                         onChanged: (service) => context

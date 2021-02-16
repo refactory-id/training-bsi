@@ -15,11 +15,10 @@ import 'package:flutter_bloc_state_management/widgets/text_input_widget.dart';
 import 'package:provider/provider.dart';
 
 class DeliveryPage extends StatelessWidget {
+  final _weightController = TextEditingController(text: "0");
+
   @override
   Widget build(BuildContext context) {
-    final weightController = TextEditingController(text: "0");
-    final width = (MediaQuery.of(context).size.width - 56);
-
     context.read<DeliveryBloc>().add(FetchAllProvincesEvent());
 
     return Scaffold(
@@ -42,7 +41,7 @@ class DeliveryPage extends StatelessWidget {
                             (province) => DropdownMenuItemWidget<Province>(
                                   text: province.name,
                                   value: province,
-                                  width: width,
+                                  context: context,
                                 ))
                         .toList(),
                     value: state.selectedProvince,
@@ -55,7 +54,7 @@ class DeliveryPage extends StatelessWidget {
                           (city) => DropdownMenuItemWidget<City>(
                                 text: city.name,
                                 value: city,
-                                width: width,
+                                context: context,
                               ))
                       .toList(),
                   value: state.selectedCity,
@@ -72,7 +71,7 @@ class DeliveryPage extends StatelessWidget {
                             (province) => DropdownMenuItemWidget<Province>(
                                   text: province.name,
                                   value: province,
-                                  width: width,
+                                  context: context,
                                 ))
                         .toList(),
                     value: state.selectedDestinationProvince,
@@ -85,7 +84,7 @@ class DeliveryPage extends StatelessWidget {
                           (city) => DropdownMenuItemWidget<City>(
                                 text: city.name,
                                 value: city,
-                                width: width,
+                                context: context,
                               ))
                       .toList(),
                   value: state.selectedDestinationCity,
@@ -95,12 +94,12 @@ class DeliveryPage extends StatelessWidget {
                 ),
                 TextInputWidget(
                     label: "Berat barang dalam satuan gram",
-                    controller: weightController,
+                    controller: _weightController,
                     inputType: TextInputType.number),
                 ButtonWidget(
                     text: "CALCULATE COST",
                     onClick: () {
-                      final weight = int.tryParse(weightController.text) ?? 0;
+                      final weight = int.tryParse(_weightController.text) ?? 0;
 
                       if (weight >= 100) {
                         Navigator.push(
