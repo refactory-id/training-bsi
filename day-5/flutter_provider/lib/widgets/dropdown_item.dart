@@ -5,9 +5,11 @@ class DropdownMenuItemWidget<T> extends DropdownMenuItem<T> {
       {Key key,
       @required String text,
       @required T value,
-      @required double width})
+      @required BuildContext context})
       : super(
             key: key,
             value: value,
-            child: Container(width: width, child: Text(text)));
+            child: Container(
+                width: (MediaQuery.of(context).size.width - 56),
+                child: Text(text)));
 }

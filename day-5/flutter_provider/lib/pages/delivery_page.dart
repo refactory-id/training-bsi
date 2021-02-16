@@ -17,8 +17,6 @@ class DeliveryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = (MediaQuery.of(context).size.width - 56);
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -66,7 +64,7 @@ class DeliveryPage extends StatelessWidget {
                                       DropdownMenuItemWidget<Province>(
                                         text: "Provinsi ${province.name}",
                                         value: province,
-                                        width: width,
+                                        context: context,
                                       ))
                               .toList(),
                           value: provider.selectedProvince,
@@ -77,7 +75,7 @@ class DeliveryPage extends StatelessWidget {
                                 (city) => DropdownMenuItemWidget<City>(
                                       text: "${city.type} ${city.name}",
                                       value: city,
-                                      width: width,
+                                      context: context,
                                     ))
                             .toList(),
                         value: provider.selectedCity,
@@ -94,7 +92,7 @@ class DeliveryPage extends StatelessWidget {
                                       DropdownMenuItemWidget<Province>(
                                         text: "Provinsi ${province.name}",
                                         value: province,
-                                        width: width,
+                                        context: context,
                                       ))
                               .toList(),
                           value: provider.selectedDestinationProvince,
@@ -106,7 +104,7 @@ class DeliveryPage extends StatelessWidget {
                                 (city) => DropdownMenuItemWidget<City>(
                                       text: "${city.type} ${city.name}",
                                       value: city,
-                                      width: width,
+                                      context: context,
                                     ))
                             .toList(),
                         value: provider.selectedDestinationCity,
