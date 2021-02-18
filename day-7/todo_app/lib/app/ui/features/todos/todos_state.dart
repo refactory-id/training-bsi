@@ -21,9 +21,17 @@ class ErrorState extends TodoState {
 
 class LoadedState extends TodoState {
   final List<Todo> todos;
+  final int counter;
 
-  LoadedState({this.todos});
+  LoadedState({this.todos, this.counter});
+
+  LoadedState copy({List<Todo> todos, int counter}) {
+    return LoadedState(
+      todos: todos ?? this.todos,
+      counter: counter ?? this.counter,
+    );
+  }
 
   @override
-  List<Object> get props => [todos];
+  List<Object> get props => [todos, counter];
 }

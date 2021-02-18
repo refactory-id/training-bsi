@@ -8,6 +8,15 @@ class TodosCubit extends Cubit<TodoState> {
 
   TodosCubit(this._useCase) : super(LoadingState());
 
+  void increment() {
+    final currentState = state;
+
+    if (currentState is LoadedState) {
+      final counter = currentState.counter + 1;
+      emit(currentState.copy(counter: counter));
+    }
+  }
+
   void fetchAllTodos() async {
     if (state is! LoadingState) {
       emit(LoadingState());
@@ -16,7 +25,9 @@ class TodosCubit extends Cubit<TodoState> {
     try {
       final todos = await _useCase.execute();
 
-      emit(todos.isNotEmpty ? LoadedState(todos: todos) : EmptyTodosState());
+      emit(todos.isNotEmpty
+          ? LoadedState(todos: todos, counter: 0)
+          : EmptyTodosState());
     } catch (e) {
       print(e);
 

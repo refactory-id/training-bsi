@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:injector/injector.dart';
-import 'package:todo_app/app/services/todo_service.dart';
+import 'package:todo_app/app/services/v1/todo_service.dart';
 import 'package:todo_app/data/services/todo_service.dart';
 
 class NetworkModule {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/app/ui/features/create_todo/create_todo_page.dart';
 import 'package:todo_app/app/ui/features/todos/todos_cubit.dart';
 import 'package:todo_app/app/ui/features/todos/todos_state.dart';
 
@@ -11,6 +12,19 @@ class TodosPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Clean Arhictecture"),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.refresh),
+              splashRadius: 24,
+              onPressed: context.read<TodosCubit>().fetchAllTodos),
+          IconButton(
+              icon: Icon(Icons.add),
+              splashRadius: 24,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => CreateTodoPage()));
+              }),
+        ],
       ),
       body: BlocBuilder<TodosCubit, TodoState>(
         builder: (context, state) {
