@@ -1,4 +1,5 @@
 import 'package:clean_todo_app/app/di/app_container.dart';
+import 'package:clean_todo_app/app/ui/features/create_todo/create_todo_page.dart';
 import 'package:clean_todo_app/app/ui/features/todos/todos_controller.dart';
 import 'package:clean_todo_app/app/ui/features/todos/todos_state.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,8 @@ class _TodosPageView extends ViewState<TodosPage, TodosController> {
                 icon: Icon(Icons.add),
                 splashRadius: 24,
                 onPressed: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (_) => CreateTodoPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => CreateTodoPage()));
                 }),
           ],
         ),
