@@ -1,5 +1,5 @@
 class CityResponse {
-  Rajaongkir rajaongkir;
+  Rajaongkir? rajaongkir;
 
   CityResponse({this.rajaongkir});
 
@@ -11,45 +11,40 @@ class CityResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.rajaongkir != null) {
-      data['rajaongkir'] = this.rajaongkir.toJson();
-    }
+    data['rajaongkir'] = rajaongkir?.toJson();
     return data;
   }
 }
 
 class Rajaongkir {
-  List<Results> results;
+  List<Results>? results;
 
   Rajaongkir({this.results});
 
   Rajaongkir.fromJson(Map<String, dynamic> json) {
-    if (json['results'] != null) {
-      results = List<Results>();
-      json['results'].forEach((v) {
-        results.add(Results.fromJson(v));
-      });
-    }
+    results = <Results>[];
+
+    json['results'].forEach((v) {
+      results?.add(Results.fromJson(v));
+    });
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.results != null) {
-      data['results'] = this.results.map((v) => v.toJson()).toList();
-    }
+    data['results'] = results?.map((v) => v.toJson()).toList();
     return data;
   }
 }
 
 class Query {
-  String province;
-  String id;
+  late String province;
+  late String id;
 
-  Query({this.province, this.id});
+  Query({required this.province, required this.id});
 
   Query.fromJson(Map<String, dynamic> json) {
-    province = json['province'];
-    id = json['id'];
+    province = json['province'] ?? '';
+    id = json['id'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -61,14 +56,14 @@ class Query {
 }
 
 class Status {
-  int code;
-  String description;
+  late int code;
+  late String description;
 
-  Status({this.code, this.description});
+  Status({required this.code, required this.description});
 
   Status.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
-    description = json['description'];
+    code = json['code'] ?? 0;
+    description = json['description'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -80,28 +75,23 @@ class Status {
 }
 
 class Results {
-  String cityId;
-  String provinceId;
-  String province;
-  String type;
-  String cityName;
-  String postalCode;
+  late String cityId, provinceId, province, type, cityName, postalCode;
 
   Results(
-      {this.cityId,
-      this.provinceId,
-      this.province,
-      this.type,
-      this.cityName,
-      this.postalCode});
+      {required this.cityId,
+      required this.provinceId,
+      required this.province,
+      required this.type,
+      required this.cityName,
+      required this.postalCode});
 
   Results.fromJson(Map<String, dynamic> json) {
-    cityId = json['city_id'];
-    provinceId = json['province_id'];
-    province = json['province'];
-    type = json['type'];
-    cityName = json['city_name'];
-    postalCode = json['postal_code'];
+    cityId = json['city_id'] ?? '';
+    provinceId = json['province_id'] ?? '';
+    province = json['province'] ?? '';
+    type = json['type'] ?? '';
+    cityName = json['city_name'] ?? '';
+    postalCode = json['postal_code'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
