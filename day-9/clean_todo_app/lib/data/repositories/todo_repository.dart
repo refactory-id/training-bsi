@@ -11,13 +11,15 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(this._service, this._mapper);
 
   @override
-  Future<Todo> createTodo(CreateTodoRequest request) {
+  Future<Todo> createTodo(CreateTodoRequest? request) {
     final body = _mapper.requestToJson(request);
 
     return _service.createTodo(body).then((response) {
       final todo = _mapper.responseToEntity(response.data["data"]);
       return todo;
-    }).catchError((e) => print(e));
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   @override
@@ -25,6 +27,8 @@ class TodoRepositoryImpl implements TodoRepository {
     return _service.getTodos().then((response) {
       final todos = _mapper.responsesToEntityList(response.data);
       return todos;
-    }).catchError((e) => print(e));
+    }).catchError((e) {
+      print(e);
+    });
   }
 }

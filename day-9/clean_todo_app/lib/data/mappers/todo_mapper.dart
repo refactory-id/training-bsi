@@ -5,7 +5,7 @@ import 'package:clean_todo_app/domain/entities/todo_entity.dart';
 
 class TodoMapperImpl implements TodoMapper {
   @override
-  Map<String, dynamic> requestToJson(TodoRequest request) {
+  Map<String, dynamic> requestToJson(TodoRequest? request) {
     if (request is CreateTodoRequest) {
       return <String, dynamic>{
         "task": request.task,

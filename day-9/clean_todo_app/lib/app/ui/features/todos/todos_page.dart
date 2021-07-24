@@ -39,13 +39,13 @@ class _TodosPageView extends ViewState<TodosPage, TodosController> {
 
             if (state is LoadedState) {
               return ListView.builder(
-                itemCount: state.todos.length,
+                itemCount: state.todos!.length,
                 itemBuilder: (context, index) {
-                  final todo = state.todos[index];
+                  final todo = state.todos![index];
 
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(todo.task),
+                    child: Text(todo.task!),
                   );
                 },
               );
@@ -55,7 +55,7 @@ class _TodosPageView extends ViewState<TodosPage, TodosController> {
               );
             } else if (state is ErrorState) {
               return ListTile(
-                title: Text(state.message),
+                title: Text(state.message!),
                 leading: Icon(
                   Icons.error_outline,
                   color: Colors.red,

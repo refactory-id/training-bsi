@@ -6,9 +6,9 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 class CreateTodoPresenter extends Presenter {
   final CreateTodoUseCase _useCase;
 
-  Function onComplete;
-  Function(dynamic error) onError;
-  Function(Todo todo) onSuccess;
+  late Function onComplete;
+  late Function(dynamic error) onError;
+  late Function(Todo? todo) onSuccess;
 
   CreateTodoPresenter(this._useCase);
 
@@ -38,7 +38,7 @@ class _CreateTodoObserver extends Observer<Todo> {
   }
 
   @override
-  void onNext(Todo response) {
+  void onNext(Todo? response) {
     _presenter.onSuccess(response);
   }
 }

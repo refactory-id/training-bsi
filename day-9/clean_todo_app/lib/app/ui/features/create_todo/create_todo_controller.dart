@@ -13,7 +13,7 @@ class CreateTodoController extends Controller {
   CreateTodoState _state = IdleCreateTodoState();
   CreateTodoState get state => _state;
   set state(CreateTodoState currentState) {
-    if (currentState != null && currentState != _state) {
+    if (currentState != _state) {
       _state = currentState;
       refreshUI();
     }
@@ -37,7 +37,7 @@ class CreateTodoController extends Controller {
       print(e);
 
       if (e is DioError) {
-        state = ErrorCreateTodoState(message: e.response.data["data"]);
+        state = ErrorCreateTodoState(message: e.response!.data["data"]);
       } else {
         state = ErrorCreateTodoState(message: e.toString());
       }

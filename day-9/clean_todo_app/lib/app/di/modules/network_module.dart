@@ -16,24 +16,24 @@ class NetworkModule {
       ));
 
       dio.interceptors
-          .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+          .add(InterceptorsWrapper(onRequest: (options, handler) async {
         print("###### REQUEST ######");
         print(
             "${options.method.toUpperCase()}: ${options.baseUrl}${options.path}");
         print("HEADERS: \n${options.headers}");
         print("DATA: \n${jsonEncode(options.data)}");
-        return options;
-      }, onResponse: (Response response) async {
+        return handler.next(options);
+      }, onResponse: (response, handler) async {
         print("###### RESPONSE ######");
         print(
-            "${response.request.method.toUpperCase()}: ${response.request.baseUrl}${response.request.path} -> ${response.statusCode}");
+            "${response.requestOptions.method.toUpperCase()}: ${response.requestOptions.baseUrl}${response.requestOptions.path} -> ${response.statusCode}");
         print("HEADERS: \n${response.headers}");
         print("DATA: \n${jsonEncode(response.data)}");
-        return response; // continue
-      }, onError: (DioError e) async {
+        return handler.next(response);
+      }, onError: (error, hanlder) async {
         print("###### ERROR ######");
-        print("ERROR: $e");
-        return e;
+        print("ERROR: $error");
+        return hanlder.next(error);
       }));
 
       return dio;

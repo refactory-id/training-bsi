@@ -5,9 +5,9 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 class TodoPresenter extends Presenter {
   final GetTodosUseCase _useCase;
 
-  Function(dynamic) onError;
-  Function(List<Todo>) onSuccess;
-  Function onComplete;
+  late Function(dynamic) onError;
+  late Function(List<Todo>?) onSuccess;
+  late Function onComplete;
 
   TodoPresenter(this._useCase);
 
@@ -37,7 +37,7 @@ class _TodoObserver extends Observer<List<Todo>> {
   }
 
   @override
-  void onNext(List<Todo> response) {
+  void onNext(List<Todo>? response) {
     _presenter.onSuccess(response);
   }
 }

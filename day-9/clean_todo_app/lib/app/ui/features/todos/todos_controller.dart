@@ -11,7 +11,7 @@ class TodosController extends Controller {
   TodoState _state = LoadingState();
   TodoState get state => _state;
   set state(TodoState currentState) {
-    if (currentState != null && _state != currentState) {
+    if (_state != currentState) {
       _state = currentState;
       refreshUI();
     }
@@ -33,7 +33,7 @@ class TodosController extends Controller {
       print(e);
 
       if (e is DioError) {
-        state = ErrorState(message: e.response.data["data"]);
+        state = ErrorState(message: e.response!.data["data"]);
       } else {
         state = ErrorState(message: e.toString());
       }
