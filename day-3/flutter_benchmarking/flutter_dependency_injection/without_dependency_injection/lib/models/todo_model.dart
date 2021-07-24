@@ -3,7 +3,11 @@ class TodoModel {
   bool status;
   String task, date;
 
-  TodoModel({this.id, this.status, this.task, this.date});
+  TodoModel(
+      {required this.id,
+      required this.status,
+      required this.task,
+      required this.date});
 
   factory TodoModel.fromJson(Map<String, dynamic> json) => TodoModel(
         id: json["id"] ?? 0,

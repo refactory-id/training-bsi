@@ -22,11 +22,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> implements TodoView {
-  ViewState _state;
+  late ViewState _state;
   set state(value) => setState(() => _state = value);
   List<TodoModel> _todos = [];
   set todos(value) => setState(() => _todos = value);
-  TodoPresenter _todoPresenter;
+  late TodoPresenter _todoPresenter;
 
   final _controller = TextEditingController(text: "");
 
@@ -65,75 +65,75 @@ class _HomePageState extends State<HomePage> implements TodoView {
       ),
       body: (_state is Loading)
           ? Center(
-        child: CupertinoActivityIndicator(
-          radius: 16,
-        ),
-      )
-          : Builder(
-          builder: (context) => Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    final todo = _todos[index];
-
-                    return Row(
-                      children: [
-                        Checkbox(
-                          value: todo.status,
-                          onChanged: (value) {
-                            _todoPresenter.updateTodoById(
-                                todo.id, {"status": value});
-                          },
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: Text(todo.task),
-                            subtitle: Text(
-                                DateFormat("EEEE, dd MMMM yyyy")
-                                    .format(DateTime.parse(todo.date))),
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, TodoPage.route,
-                                  arguments: todo.id);
-                            },
-                          ),
-                        ),
-                        IconButton(
-                            padding: EdgeInsets.all(8),
-                            icon: Icon(Icons.close),
-                            onPressed: () {
-                              _todoPresenter.deleteTodoById(todo.id);
-                            })
-                      ],
-                    );
-                  },
-                  itemCount: _todos.length,
-                ),
+              child: CupertinoActivityIndicator(
+                radius: 16,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                      child:
-                      TextInputWidget("Create todo", _controller)),
-                  ButtonWidget("Submit", () {
-                    if (_controller.text.isNotEmpty) {
-                      _todoPresenter.createTodo({
-                        "task": _controller.text,
-                      });
-                    } else {
-                      context.showSnackbar("Todo can't be empty!");
-                    }
-                  }),
-                  SizedBox(
-                    width: 16,
-                  )
-                ],
-              )
-            ],
-          )),
+            )
+          : Builder(
+              builder: (context) => Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            final todo = _todos[index];
+
+                            return Row(
+                              children: [
+                                Checkbox(
+                                  value: todo.status,
+                                  onChanged: (value) {
+                                    _todoPresenter.updateTodoById(
+                                        todo.id, {"status": value});
+                                  },
+                                ),
+                                Expanded(
+                                  child: ListTile(
+                                    title: Text(todo.task),
+                                    subtitle: Text(
+                                        DateFormat("EEEE, dd MMMM yyyy")
+                                            .format(DateTime.parse(todo.date))),
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, TodoPage.route,
+                                          arguments: todo.id);
+                                    },
+                                  ),
+                                ),
+                                IconButton(
+                                    padding: EdgeInsets.all(8),
+                                    icon: Icon(Icons.close),
+                                    onPressed: () {
+                                      _todoPresenter.deleteTodoById(todo.id);
+                                    })
+                              ],
+                            );
+                          },
+                          itemCount: _todos.length,
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child:
+                                  TextInputWidget("Create todo", _controller)),
+                          ButtonWidget("Submit", () {
+                            if (_controller.text.isNotEmpty) {
+                              _todoPresenter.createTodo({
+                                "task": _controller.text,
+                              });
+                            } else {
+                              context.showSnackbar("Todo can't be empty!");
+                            }
+                          }),
+                          SizedBox(
+                            width: 16,
+                          )
+                        ],
+                      )
+                    ],
+                  )),
     );
   }
 
@@ -149,25 +149,28 @@ class _HomePageState extends State<HomePage> implements TodoView {
       if (viewState is SuccessGetAllTodo) {
         if (viewState.data != null) todos = viewState.data;
       } else if (viewState is SuccessUpdateTodoById) {
-        if (viewState.data != null) {
+        final data = viewState.data;
+        if (data != null) {
           setState(() {
-            final index = _todos.indexWhere((e) => e.id == viewState.data.id);
-            if (index != -1) _todos[index] = viewState.data;
+            final index = _todos.indexWhere((e) => e.id == data.id);
+            if (index != -1) _todos[index] = data;
           });
         }
       } else if (viewState is SuccessDeleteTodoById) {
-        if (viewState.data != null) {
+        final data = viewState.data;
+        if (data != null) {
           setState(() {
-            final index = _todos.indexWhere((e) => e.id == viewState.data.id);
+            final index = _todos.indexWhere((e) => e.id == data.id);
             if (index != -1) _todos.removeAt(index);
           });
         }
       } else if (viewState is SuccessCreateTodo) {
+        final data = viewState.data;
         _controller.text = "";
 
-        if (viewState.data != null) {
+        if (data != null) {
           setState(() {
-            _todos.insert(0, viewState.data);
+            _todos!.insert(0, data);
           });
         }
       }

@@ -26,12 +26,12 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> implements TodoView {
-  ViewState _state;
+  late ViewState _state;
   set state(value) => setState(() => _state = value);
-  TodoModel _todo;
+  late TodoModel _todo;
   set todo(value) => setState(() => _todo = value);
 
-  TodoPresenter _todoPresenter;
+  late TodoPresenter _todoPresenter;
 
   final _controller = TextEditingController(text: "");
   set text(value) => setState(() => _controller.text = value);
@@ -83,7 +83,8 @@ class _TodoPageState extends State<TodoPage> implements TodoView {
                 TextInputWidget("Update todo", _controller),
                 CheckboxListTile(
                   value: _todo.status,
-                  onChanged: (value) => {setState(() => _todo.status = value)},
+                  onChanged: (value) =>
+                      {setState(() => _todo.status = value ?? false)},
                   title: Text("is done?"),
                 ),
                 Container(
@@ -110,10 +111,10 @@ class _TodoPageState extends State<TodoPage> implements TodoView {
     if (viewState is Success) {
       if (viewState is SuccessGetTodoById) {
         todo = viewState.data;
-        text = viewState.data.task;
+        text = viewState.data!.task;
       } else if (viewState is SuccessUpdateTodoById) {
         todo = viewState.data;
-        text = viewState.data.task;
+        text = viewState.data!.task;
       }
     }
   }

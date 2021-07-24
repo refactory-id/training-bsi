@@ -3,11 +3,11 @@ import 'package:without_dependency_injection/services/todo_service.dart';
 import 'package:without_dependency_injection/main.dart';
 
 abstract class TodoRepository {
-  Future<List<TodoModel>> getAllTodo();
-  Future<TodoModel> getTodoById(int id);
-  Future<TodoModel> deleteTodoById(int id);
-  Future<TodoModel> createTodo(Map<String, dynamic> body);
-  Future<TodoModel> updateTodoById(int id, Map<String, dynamic> body);
+  Future<List<TodoModel>?> getAllTodo();
+  Future<TodoModel?> getTodoById(int? id);
+  Future<TodoModel?> deleteTodoById(int? id);
+  Future<TodoModel?> createTodo(Map<String, dynamic> body);
+  Future<TodoModel?> updateTodoById(int? id, Map<String, dynamic> body);
 }
 
 class TodoRepositoryImpl implements TodoRepository {
@@ -16,9 +16,9 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(this._service);
 
   @override
-  Future<TodoModel> createTodo(Map<String, dynamic> body) async {
+  Future<TodoModel?> createTodo(Map<String, dynamic> body) async {
     try {
-      final response = await _service.createTodo(body);
+      final response = await (_service.createTodo(body));
       return TodoModel.fromJson(response["data"]);
     } catch (e) {
       if (MyApp.isDebug) print(e);
@@ -27,9 +27,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<TodoModel> deleteTodoById(int id) async {
+  Future<TodoModel?> deleteTodoById(int? id) async {
     try {
-      final response = await _service.deleteTodoById(id);
+      final response = await (_service.deleteTodoById(id));
       return TodoModel.fromJson(response["data"]);
     } catch (e) {
       if (MyApp.isDebug) print(e);
@@ -38,10 +38,10 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<List<TodoModel>> getAllTodo() async {
+  Future<List<TodoModel>?> getAllTodo() async {
     try {
       final todos = <TodoModel>[];
-      final response = await _service.getAllTodo();
+      final response = await (_service.getAllTodo());
 
       response["data"]
           ?.forEach((object) => todos.add(TodoModel.fromJson(object)));
@@ -54,9 +54,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<TodoModel> getTodoById(int id) async {
+  Future<TodoModel?> getTodoById(int? id) async {
     try {
-      final response = await _service.getTodoById(id);
+      final response = await (_service.getTodoById(id));
       return TodoModel.fromJson(response["data"]);
     } catch (e) {
       if (MyApp.isDebug) print(e);
@@ -65,9 +65,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<TodoModel> updateTodoById(int id, Map<String, dynamic> body) async {
+  Future<TodoModel?> updateTodoById(int? id, Map<String, dynamic> body) async {
     try {
-      final response = await _service.updateTodoById(id, body);
+      final response = await (_service.updateTodoById(id, body));
       return TodoModel.fromJson(response["data"]);
     } catch (e) {
       if (MyApp.isDebug) print(e);

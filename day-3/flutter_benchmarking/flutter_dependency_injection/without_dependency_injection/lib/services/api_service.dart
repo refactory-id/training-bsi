@@ -15,10 +15,10 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<Map<String, dynamic>> call(String url, RequestType type,
-      {Map<String, String> headers,
+      {Map<String, String>? headers,
       dynamic body,
-      Map<String, String> params}) async {
-    Response response;
+      Map<String, String>? params}) async {
+    late Response response;
 
     try {
       switch (type) {

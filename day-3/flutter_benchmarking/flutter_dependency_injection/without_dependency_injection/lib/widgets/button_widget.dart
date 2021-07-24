@@ -17,6 +17,6 @@ class ButtonWidget extends StatelessWidget {
           text,
           style: TextStyle(color: Colors.white, fontSize: 16),
         ),
-        onPressed: onClick);
+        onPressed: onClick as void Function()?);
   }
 }
