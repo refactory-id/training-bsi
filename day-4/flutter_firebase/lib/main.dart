@@ -16,9 +16,71 @@ import 'package:flutter_firebase/widgets/oops_widget.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
+final _channel = AndroidNotificationChannel(
+  'high_importance_channel',
+  'High Importance Notifications',
+  'This channel is used for important notifications.',
+  importance: Importance.max,
+);
+
+Future<dynamic> _handleMessage(Map<String, dynamic> payload) async {
+  print("${Platform.isIOS ? 'iOS' : 'Android'}: $payload");
+
+  if (payload.containsKey("data")) {
+    final data = payload["data"];
+    final sender = data["sender"];
+    final message = data["message"];
+
+    FlutterLocalNotificationsPlugin().show(
+        message.hashCode,
+        "Pesan masuk dari $sender",
+        message,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _channel.id,
+            _channel.name,
+            _channel.description,
+          ),
+        ),
+        payload: message);
+  }
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  final IOSInitializationSettings initializationSettingsIOS =
+      IOSInitializationSettings(
+    onDidReceiveLocalNotification: (id, title, body, payload) async {},
+  );
+  final MacOSInitializationSettings initializationSettingsMacOS =
+      MacOSInitializationSettings();
+  final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+      macOS: initializationSettingsMacOS);
+
+  flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onSelectNotification: (payload) async {
+      print(payload);
+    },
+  );
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(_channel);
+
+  if (Platform.isAndroid) return _handleMessage;
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   final auth = FirebaseAuth.instance;
   final reference = FirebaseFirestore.instance.collection("users");
@@ -45,7 +107,7 @@ void main() async {
       error: true,
     ));
   }
-  final firebaseMessaging = FirebaseMessaging();
+  final firebaseMessaging = FirebaseMessaging.instance;
 
   runApp(MultiProvider(
     providers: [
@@ -66,73 +128,13 @@ class MyApp extends StatelessWidget {
     return inDebugMode;
   }
 
-  static AndroidNotificationChannel get _channel => AndroidNotificationChannel(
-        'high_importance_channel', // id
-        'High Importance Notifications', // title
-        'This channel is used for important notifications.', // description
-        importance: Importance.max,
-      );
-
-  static Future<dynamic> handleMessage(Map<String, dynamic> payload) async {
-    print("${Platform.isIOS ? 'iOS' : 'Android'}: $payload");
-
-    if (payload.containsKey("data")) {
-      final data = payload["data"];
-      final sender = data["sender"];
-      final message = data["message"];
-
-      FlutterLocalNotificationsPlugin().show(
-          message.hashCode,
-          "Pesan masuk dari $sender",
-          message,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              _channel.id,
-              _channel.name,
-              _channel.description,
-            ),
-          ),
-          payload: message);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: Future.delayed(Duration(seconds: 1), () async {
-          final flutterLocalNotificationsPlugin =
-              FlutterLocalNotificationsPlugin();
-          final initializationSettingsAndroid =
-              AndroidInitializationSettings('@mipmap/ic_launcher');
-          final IOSInitializationSettings initializationSettingsIOS =
-              IOSInitializationSettings(
-            onDidReceiveLocalNotification: (id, title, body, payload) async {},
-          );
-          final MacOSInitializationSettings initializationSettingsMacOS =
-              MacOSInitializationSettings();
-          final InitializationSettings initializationSettings =
-              InitializationSettings(
-                  android: initializationSettingsAndroid,
-                  iOS: initializationSettingsIOS,
-                  macOS: initializationSettingsMacOS);
-
-          flutterLocalNotificationsPlugin.initialize(
-            initializationSettings,
-            onSelectNotification: (payload) async {
-              print(payload);
-            },
-          );
-
-          await flutterLocalNotificationsPlugin
-              .resolvePlatformSpecificImplementation<
-                  AndroidFlutterLocalNotificationsPlugin>()
-              ?.createNotificationChannel(_channel);
-
-          FirebaseMessaging().configure(
-              onMessage: handleMessage,
-              onBackgroundMessage: Platform.isAndroid ? handleMessage : null,
-              onResume: handleMessage,
-              onLaunch: handleMessage);
+          FirebaseMessaging.onMessage.listen((event) {
+            _handleMessage(event.data);
+          });
         }),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
