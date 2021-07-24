@@ -20,23 +20,23 @@ void main() {
 
   if (MyApp.isDebug) {
     dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+        .add(InterceptorsWrapper(onRequest: (request, handler) async {
       print("###### REQUEST ######");
-      print("${options.method.toUpperCase()}: ${options.path}");
-      print("HEADERS: \n${options.headers}");
-      print("DATA: \n${jsonEncode(options.data)}");
-      return options;
-    }, onResponse: (Response response) async {
+      print("${request.method.toUpperCase()}: ${request.path}");
+      print("HEADERS: \n${request.headers}");
+      print("DATA: \n${jsonEncode(request.data)}");
+      return handler.next(request);
+    }, onResponse: (response, handler) async {
       print("###### RESPONSE ######");
       print(
-          "${response.request.method.toUpperCase()}: ${response.request.path} -> ${response.statusCode}");
+          "${response.requestOptions.method.toUpperCase()}: ${response.requestOptions.path} -> ${response.statusCode}");
       print("HEADERS: \n${response.headers}");
       print("DATA: \n${jsonEncode(response.data)}");
-      return response; // continue
-    }, onError: (DioError e) async {
+      return handler.next(response);
+    }, onError: (err, handler) async {
       print("###### ERROR ######");
-      print("ERROR: ${e.response.data}");
-      return e;
+      print("ERROR: ${err.response.data}");
+      return handler.next(err);
     }));
   }
 

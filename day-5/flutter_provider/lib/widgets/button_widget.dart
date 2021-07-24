@@ -14,12 +14,14 @@ class ButtonWidget extends StatelessWidget {
     return Container(
       width: double.maxFinite,
       margin: EdgeInsets.all(16),
-      child: RaisedButton(
-        color: color ?? Colors.black,
-        padding: EdgeInsets.all(12),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: color ?? Colors.black,
+          padding: EdgeInsets.all(12),
+          elevation: 2,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
         onPressed: onClick,
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: Text(
           text,
           style: TextStyle(
