@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       onGenerateRoute: (settings) {
         if (settings.name == TodoPage.route) {
-          final int id = settings.arguments;
+          final int? id = settings.arguments as int?;
 
           return MaterialPageRoute(builder: (context) => TodoPage(id));
         } else {

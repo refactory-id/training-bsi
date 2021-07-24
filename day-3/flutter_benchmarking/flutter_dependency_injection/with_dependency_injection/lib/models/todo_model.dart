@@ -1,7 +1,7 @@
 class TodoModel {
-  int id;
-  bool status;
-  String task, date;
+  int? id;
+  bool? status;
+  String? task, date;
 
   TodoModel({this.id, this.status, this.task, this.date});
 

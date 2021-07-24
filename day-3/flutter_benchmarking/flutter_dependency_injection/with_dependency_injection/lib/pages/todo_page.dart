@@ -13,7 +13,7 @@ import 'package:with_dependency_injection/utils/view_util.dart';
 class TodoPage extends StatefulWidget {
   static String route = "/todo_page";
 
-  final int _id;
+  final int? _id;
 
   TodoPage(this._id);
 
@@ -23,12 +23,12 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> implements TodoView {
-  ViewState _state;
+  ViewState? _state;
   set state(value) => setState(() => _state = value);
-  TodoModel _todo;
+  TodoModel? _todo;
   set todo(value) => setState(() => _todo = value);
 
-  TodoPresenter _todoPresenter;
+  late TodoPresenter _todoPresenter;
 
   final _controller = TextEditingController(text: "");
   set text(value) => setState(() => _controller.text = value);
@@ -64,8 +64,8 @@ class _TodoPageState extends State<TodoPage> implements TodoView {
                 ),
                 TextInputWidget("Update todo", _controller),
                 CheckboxListTile(
-                  value: _todo.status,
-                  onChanged: (value) => {setState(() => _todo.status = value)},
+                  value: _todo!.status,
+                  onChanged: (value) => {setState(() => _todo!.status = value)},
                   title: Text("is done?"),
                 ),
                 Container(
@@ -73,7 +73,7 @@ class _TodoPageState extends State<TodoPage> implements TodoView {
                   margin: EdgeInsets.all(16),
                   child: ButtonWidget("Submit", () {
                     if (_controller.text.isNotEmpty) {
-                      _todoPresenter.updateTodoById(_todo.id, _todo.toJson());
+                      _todoPresenter.updateTodoById(_todo!.id, _todo!.toJson());
                     } else {
                       context.showSnackbar("Todo can't be empty!");
                     }
@@ -91,10 +91,10 @@ class _TodoPageState extends State<TodoPage> implements TodoView {
     if (viewState is Success) {
       if (viewState is SuccessGetTodoById) {
         todo = viewState.data;
-        text = viewState.data.task;
+        text = viewState.data!.task;
       } else if (viewState is SuccessUpdateTodoById) {
         todo = viewState.data;
-        text = viewState.data.task;
+        text = viewState.data!.task;
       }
     }
   }

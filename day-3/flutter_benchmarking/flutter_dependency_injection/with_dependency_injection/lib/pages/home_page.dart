@@ -19,11 +19,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> implements TodoView {
-  ViewState _state;
+  ViewState _state = Loading();
   set state(value) => setState(() => _state = value);
   List<TodoModel> _todos = [];
   set todos(value) => setState(() => _todos = value);
-  TodoPresenter _todoPresenter;
+  late TodoPresenter _todoPresenter;
 
   _HomePageState(TodoPresenterImpl todoPresenterImpl) {
     todoPresenterImpl.view = this;
@@ -70,10 +70,10 @@ class _HomePageState extends State<HomePage> implements TodoView {
                                 ),
                                 Expanded(
                                   child: ListTile(
-                                    title: Text(todo.task),
+                                    title: Text(todo.task!),
                                     subtitle: Text(
-                                        DateFormat("EEEE, dd MMMM yyyy")
-                                            .format(DateTime.parse(todo.date))),
+                                        DateFormat("EEEE, dd MMMM yyyy").format(
+                                            DateTime.parse(todo.date!))),
                                     onTap: () {
                                       Navigator.pushNamed(
                                           context, TodoPage.route,
@@ -131,25 +131,29 @@ class _HomePageState extends State<HomePage> implements TodoView {
       if (viewState is SuccessGetAllTodo) {
         if (viewState.data != null) todos = viewState.data;
       } else if (viewState is SuccessUpdateTodoById) {
-        if (viewState.data != null) {
+        final data = viewState.data;
+        if (data != null) {
           setState(() {
-            final index = _todos.indexWhere((e) => e.id == viewState.data.id);
-            if (index != -1) _todos[index] = viewState.data;
+            final index = _todos.indexWhere((e) => e.id == data.id);
+            if (index != -1) _todos[index] = data;
           });
         }
       } else if (viewState is SuccessDeleteTodoById) {
-        if (viewState.data != null) {
+        final data = viewState.data;
+        if (data != null) {
           setState(() {
-            final index = _todos.indexWhere((e) => e.id == viewState.data.id);
+            final index = _todos.indexWhere((e) => e.id == data.id);
             if (index != -1) _todos.removeAt(index);
           });
         }
       } else if (viewState is SuccessCreateTodo) {
         _controller.text = "";
 
-        if (viewState.data != null) {
+        final data = viewState.data;
+
+        if (data != null) {
           setState(() {
-            _todos.insert(0, viewState.data);
+            _todos.insert(0, data);
           });
         }
       }
