@@ -9,10 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons:
-  flutter_bloc:
-  equatable:
-  dio:
+  cupertino_icons: ^1.0.3
+  flutter_bloc: ^7.0.1
+  equatable: ^2.0.3
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:

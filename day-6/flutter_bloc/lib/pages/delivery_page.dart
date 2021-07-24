@@ -114,8 +114,8 @@ class DeliveryPage extends StatelessWidget {
                                         weight: weight,
                                       )));
                         } else {
-                          Scaffold.of(context).removeCurrentSnackBar();
-                          Scaffold.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
                                   "Berat barang tidak boleh kurang dari 100 gram")));
                         }

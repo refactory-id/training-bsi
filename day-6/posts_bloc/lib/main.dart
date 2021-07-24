@@ -14,9 +14,9 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
-    print('${cubit.runtimeType} $error');
-    super.onError(cubit, error, stackTrace);
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    print('${bloc.runtimeType} $error');
+    super.onError(bloc, error, stackTrace);
   }
 
   @override
@@ -36,24 +36,23 @@ void main() {
     sendTimeout: 30 * 1000,
   ));
 
-  dio.interceptors
-      .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
     print("###### REQUEST ######");
     print("${options.method.toUpperCase()}: ${options.baseUrl}${options.path}");
     print("HEADERS: \n${options.headers}");
     print("DATA: \n${jsonEncode(options.data)}");
-    return options;
-  }, onResponse: (Response response) async {
+    return handler.next(options);
+  }, onResponse: (response, handler) async {
     print("###### RESPONSE ######");
     print(
-        "${response.request.method.toUpperCase()}: ${response.request.baseUrl}${response.request.path} -> ${response.statusCode}");
+        "${response.requestOptions.method.toUpperCase()}: ${response.requestOptions.baseUrl}${response.requestOptions.path} -> ${response.statusCode}");
     print("HEADERS: \n${response.headers}");
     print("DATA: \n${jsonEncode(response.data)}");
-    return response; // continue
-  }, onError: (DioError e) async {
+    return handler.next(response);
+  }, onError: (err, handler) async {
     print("###### ERROR ######");
-    print("ERROR: $e");
-    return e;
+    print("ERROR: $err");
+    return handler.next(err);
   }));
 
   runApp(MultiBlocProvider(
