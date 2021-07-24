@@ -4,7 +4,7 @@ import 'color_util.dart';
 
 extension ViewUtil on BuildContext {
   void showSnackbar(String message) {
-    Scaffold.of(this).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(this).showSnackBar(SnackBar(
       content: Text(
         message,
         style: TextStyle(

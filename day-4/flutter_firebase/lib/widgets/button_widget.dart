@@ -10,10 +10,12 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        color: color ?? colorAccent,
-        padding: EdgeInsets.all(16),
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          primary: color ?? colorAccent,
+          padding: EdgeInsets.all(16),
+        ),
         child: Text(
           text,
           style: TextStyle(
