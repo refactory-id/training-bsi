@@ -17,7 +17,9 @@ class TodoRepositoryImpl implements TodoRepository {
     return _service.createTodo(body).then((response) {
       final todo = _mapper.responseToEntity(response.data["data"]);
       return todo;
-    }).catchError((e) => print(e));
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   @override
@@ -25,6 +27,8 @@ class TodoRepositoryImpl implements TodoRepository {
     return _service.getTodos().then((response) {
       final todos = _mapper.responsesToEntityList(response.data);
       return todos;
-    }).catchError((e) => print(e));
+    }).catchError((e) {
+      print(e);
+    });
   }
 }
