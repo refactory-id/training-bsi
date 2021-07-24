@@ -23,11 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_clean_architecture:
-  cupertino_icons:
-  injector:
-  logging:
-  dio:
+  flutter_clean_architecture: ^5.0.0
+  cupertino_icons: ^1.0.3
+  injector: ^2.0.0
+  logging: ^1.0.1
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:
