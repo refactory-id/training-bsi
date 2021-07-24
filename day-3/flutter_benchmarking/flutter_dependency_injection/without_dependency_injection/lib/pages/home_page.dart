@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> implements TodoView {
 
         if (data != null) {
           setState(() {
-            _todos!.insert(0, data);
+            _todos.insert(0, data);
           });
         }
       }
