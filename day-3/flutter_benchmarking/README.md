@@ -904,7 +904,7 @@ __view_util.dart__
 ```dart
 extension ViewUtil on BuildContext {
   void showSnackbar(String message) {
-    Scaffold.of(this).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         message,
         style: TextStyle(

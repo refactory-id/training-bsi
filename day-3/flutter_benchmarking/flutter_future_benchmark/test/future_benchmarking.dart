@@ -12,15 +12,16 @@ void main() async {
   final headers = <String, String>{"key": "d4bb9252bfe68b20fecb0846e4d7754f"};
 
   Future<List<Province.Results>> getAllProvince() =>
-      Http.get(provinceUrl, headers: headers).then((value) {
+      Http.get(Uri.parse(provinceUrl), headers: headers).then((value) {
         final json = jsonDecode(value.body);
-        return Province.ProvinceResponse.fromJson(json)?.rajaongkir?.results;
+        return Province.ProvinceResponse.fromJson(json).rajaongkir?.results ??
+            [];
       });
 
   Future<List<City.Results>> getAllCity() =>
-      Http.get(cityUrl, headers: headers).then((value) {
+      Http.get(Uri.parse(cityUrl), headers: headers).then((value) {
         final json = jsonDecode(value.body);
-        return City.CityResponse.fromJson(json)?.rajaongkir?.results;
+        return City.CityResponse.fromJson(json).rajaongkir?.results ?? [];
       });
 
   group("Future benchmarking", () {
