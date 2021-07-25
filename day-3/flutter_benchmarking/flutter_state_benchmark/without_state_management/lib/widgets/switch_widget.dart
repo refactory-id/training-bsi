@@ -5,7 +5,7 @@ class EphemeralSwitchWidget extends StatelessWidget {
   final Function(bool) callback;
   final bool isDarkMode;
 
-  EphemeralSwitchWidget({this.callback, this.isDarkMode});
+  EphemeralSwitchWidget({required this.callback, required this.isDarkMode});
 
   @override
   Widget build(BuildContext context) {
