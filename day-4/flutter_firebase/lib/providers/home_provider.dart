@@ -20,13 +20,15 @@ class HomeProvider extends BaseProvider {
   HomeProvider(this._firebaseMessaging, this._auth, this._reference, this._dio);
 
   void logout() async {
-    await _auth.signOut();
-    await _reference.doc(_auth.currentUser.uid).update({"token": ""});
+    Future.wait([
+      _auth.signOut(),
+      _reference.doc(_auth.currentUser?.uid).update({"token": ""})
+    ]);
   }
 
   void getToken() {
     _firebaseMessaging.getToken().then((token) =>
-        _reference.doc(_auth.currentUser.uid).update({"token": token}));
+        _reference.doc(_auth.currentUser?.uid).update({"token": token}));
   }
 
   void sendMessage(String message, UserModel user, Function onSuccess) async {
@@ -34,8 +36,8 @@ class HomeProvider extends BaseProvider {
       await _dio.post("fcm/send", data: {
         "data": {
           "click_action": "FLUTTER_NOTIFICATION_CLICK",
-          "sender": _auth.currentUser.email,
-          "image": _auth.currentUser.photoURL,
+          "sender": _auth.currentUser?.email,
+          "image": _auth.currentUser?.photoURL,
           "message": message
         },
         "to": user.token

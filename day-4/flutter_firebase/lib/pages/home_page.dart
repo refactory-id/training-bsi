@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/models/user_model.dart';
 import 'package:flutter_firebase/providers/home_provider.dart';
@@ -13,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeProvider _provider;
+  late HomeProvider _provider;
 
   @override
   void didChangeDependencies() {
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           return true;
         },
         child: ScaffoldWidget(
-          body: StreamBuilder(
+          body: StreamBuilder<QuerySnapshot>(
             stream: _provider.allUserStream,
             builder: (context, snapshot) {
               if (snapshot.hasError)
@@ -49,9 +50,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
 
-              final List<UserModel> users = snapshot.data.docs
-                  .map<UserModel>((object) => UserModel.fromJson(object.data()))
-                  .toList();
+              final List<UserModel> users = snapshot.data?.docs
+                      .map<UserModel>((json) => UserModel.fromJson(
+                          json.data() as Map<String, dynamic>))
+                      .toList() ??
+                  [];
 
               return ListView.builder(
                   itemCount: users.length,

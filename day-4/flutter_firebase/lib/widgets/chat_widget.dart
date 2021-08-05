@@ -20,14 +20,14 @@ class ChatWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Text(
-            user.name,
+            user.name ?? '',
             style: TextStyle(color: colorTextPrimary, fontSize: 20),
           ),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            user.email,
+            user.email ?? '',
             style: TextStyle(color: colorTextSecondary, fontSize: 16),
           ),
         ),

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase/utils/color_util.dart';
 
 class TextInputWidget extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String label;
   final bool isPassword;
-  final Function(String) onChange;
+  final Function(String)? onChange;
   final TextInputType inputType;
 
   TextInputWidget(
-      {@required this.label,
-      @required this.controller,
-      @required this.inputType,
+      {required this.label,
+      required this.controller,
+      required this.inputType,
       this.onChange,
       this.isPassword = false});
 

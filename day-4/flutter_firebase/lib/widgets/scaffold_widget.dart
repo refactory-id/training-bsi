@@ -4,10 +4,10 @@ import 'package:flutter_firebase/utils/color_util.dart';
 class ScaffoldWidget extends Scaffold {
   final String title;
   final Widget body;
-  final FloatingActionButton floatingActionButton;
+  final FloatingActionButton? floatingActionButton;
 
   ScaffoldWidget(
-      {this.title = "", @required this.body, this.floatingActionButton})
+      {this.title = "", required this.body, this.floatingActionButton})
       : super(
             body: body,
             backgroundColor: colorPrimary,

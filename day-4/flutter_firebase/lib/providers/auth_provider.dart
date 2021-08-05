@@ -9,23 +9,15 @@ class AuthProvider extends BaseProvider {
 
   AuthProvider(this._auth, this._reference);
 
-  String _name = "", _email = "", _password = "";
-  
-  set name(String value) => _name = value ?? "";
-  set email(String value) => _email = value ?? "";
-  set password(String value) => _password = value ?? "";
-
-  String get name => _name;
-  String get email => _email;
-  String get password => _password;
+  String name = "", email = "", password = "";
 
   bool get isLogged => _auth.currentUser != null;
 
   void register(
       String name, String email, String password, Function onSuccess) async {
-    _name = name;
-    _email = email;
-    _password = password;
+    this.name = name;
+    this.email = email;
+    this.password = password;
 
     state = Loading();
 
@@ -33,14 +25,14 @@ class AuthProvider extends BaseProvider {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      await _reference.doc(credential.user.uid).set({
-        "id": credential.user.uid,
+      await _reference.doc(credential.user?.uid).set({
+        "id": credential.user?.uid,
         "name": name,
         "email": email,
         "token": ""
       });
 
-      print(credential.user.uid);
+      print(credential.user?.uid);
 
       state = Success();
 
@@ -51,8 +43,8 @@ class AuthProvider extends BaseProvider {
   }
 
   void login(String email, String password, Function onSuccess) async {
-    _email = email;
-    _password = password;
+    this.email = email;
+    this.password = password;
 
     state = Loading();
 
@@ -60,7 +52,7 @@ class AuthProvider extends BaseProvider {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      print(credential.user.uid);
+      print(credential.user?.uid);
 
       state = Success();
 

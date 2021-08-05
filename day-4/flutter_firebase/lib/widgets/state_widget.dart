@@ -5,9 +5,10 @@ import 'package:flutter_firebase/widgets/oops_widget.dart';
 
 class StateWidget extends StatelessWidget {
   final ViewState state;
-  final Widget success, idle;
+  final Widget success;
+  final Widget? idle;
 
-  StateWidget({@required this.state, @required this.success, this.idle});
+  StateWidget({required this.state, required this.success, this.idle});
 
   @override
   Widget build(BuildContext context) {

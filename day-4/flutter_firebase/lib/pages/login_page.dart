@@ -15,15 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController, passwordController;
-
-  @override
-  void didChangeDependencies() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-
-    super.didChangeDependencies();
-  }
+  late TextEditingController emailController = TextEditingController(),
+      passwordController = TextEditingController();
 
   Future<void> checkSession() async {
     return Future.delayed(Duration(seconds: 1),

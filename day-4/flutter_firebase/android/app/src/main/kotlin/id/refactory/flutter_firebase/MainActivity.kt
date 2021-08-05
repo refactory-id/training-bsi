@@ -1,26 +1,16 @@
 package id.refactory.flutter_firebase
 
 import android.os.Bundle
-import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.plugin.common.PluginRegistry
-import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin
-import io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService
-import io.flutter.view.FlutterMain
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugins.GeneratedPluginRegistrant
 
-class MainActivity: FlutterActivity(), PluginRegistry.PluginRegistrantCallback {
+class MainActivity: FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FlutterFirebaseMessagingService.setPluginRegistrant(this)
-        FlutterMain.startInitialization(this)
     }
 
-    override fun registerWith(registry: PluginRegistry?) {
-        if (registry?.hasPlugin("io.flutter.plugins.firebasemessaging") == false) {
-            FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"))
-        }
-        if (registry?.hasPlugin("com.dexterous.flutterlocalnotifications") == false) {
-            FlutterLocalNotificationsPlugin.registerWith(registry.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"))
-        }
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
     }
 }

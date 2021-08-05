@@ -3,7 +3,7 @@ import 'package:flutter_firebase/utils/color_util.dart';
 import 'package:flutter_svg/svg.dart';
 
 class OopsWidget extends StatelessWidget {
-  final String message;
+  final String? message;
 
   OopsWidget({this.message});
 

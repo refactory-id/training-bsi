@@ -5,15 +5,14 @@ import androidx.multidex.MultiDex
 import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin
 import io.flutter.app.FlutterApplication
 import io.flutter.plugin.common.PluginRegistry
-import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin
-import io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService
-import io.flutter.view.FlutterMain
+import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback
+import io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingPlugin
+import io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingBackgroundService;
 
-class MainApplication : FlutterApplication(), PluginRegistry.PluginRegistrantCallback {
+class MainApplication : FlutterApplication(), PluginRegistrantCallback {
     override fun onCreate() {
         super.onCreate()
-        FlutterFirebaseMessagingService.setPluginRegistrant(this)
-        FlutterMain.startInitialization(this)
+        FlutterFirebaseMessagingBackgroundService.setPluginRegistrant(this)
     }
 
     override fun attachBaseContext(base: Context) {
@@ -22,7 +21,7 @@ class MainApplication : FlutterApplication(), PluginRegistry.PluginRegistrantCal
     }
 
     override fun registerWith(registry: PluginRegistry?) {
-        FirebaseMessagingPlugin.registerWith(registry?.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"))
+        FlutterFirebaseMessagingPlugin.registerWith(registry?.registrarFor("io.flutter.plugins.firebase.messaging.FirebaseMessagingPlugin"))
         FlutterLocalNotificationsPlugin.registerWith(registry?.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"))
     }
 }

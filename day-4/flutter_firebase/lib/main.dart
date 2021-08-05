@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_firebase/pages/home_page.dart';
 import 'package:flutter_firebase/pages/login_page.dart';
 import 'package:flutter_firebase/pages/register_page.dart';
@@ -23,45 +26,39 @@ final _channel = AndroidNotificationChannel(
   importance: Importance.max,
 );
 
-Future<dynamic> _handleMessage(Map<String, dynamic> payload) async {
+final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+Future<dynamic> _handleMessage(RemoteMessage remoteMessage) async {
+  final payload = remoteMessage.data;
   print("${Platform.isIOS ? 'iOS' : 'Android'}: $payload");
 
-  if (payload.containsKey("data")) {
-    final data = payload["data"];
-    final sender = data["sender"];
-    final message = data["message"];
+  final sender = payload["sender"];
+  final message = payload["message"];
 
-    FlutterLocalNotificationsPlugin().show(
-        message.hashCode,
-        "Pesan masuk dari $sender",
-        message,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            _channel.id,
-            _channel.name,
-            _channel.description,
-          ),
-        ),
-        payload: message);
-  }
+  flutterLocalNotificationsPlugin.show(
+      message.hashCode,
+      "Pesan masuk dari $sender",
+      message,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+            _channel.id, _channel.name, _channel.description,
+            icon: '@mipmap/ic_launcher'),
+      ),
+      payload: message);
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-  final IOSInitializationSettings initializationSettingsIOS =
-      IOSInitializationSettings(
+      AndroidInitializationSettings('app_icon');
+
+  final initializationSettingsIOS = IOSInitializationSettings(
     onDidReceiveLocalNotification: (id, title, body, payload) async {},
   );
-  final MacOSInitializationSettings initializationSettingsMacOS =
-      MacOSInitializationSettings();
+
   final InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-      macOS: initializationSettingsMacOS);
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
   flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
@@ -70,16 +67,35 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     },
   );
 
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(_channel);
+  await Future.wait([
+    flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.createNotificationChannel(_channel) ??
+        Future(() => {}),
+    flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                IOSFlutterLocalNotificationsPlugin>()
+            ?.requestPermissions(
+              alert: true,
+              badge: true,
+              sound: true,
+            ) ??
+        Future(() => {}),
+  ]);
 
-  if (Platform.isAndroid) return _handleMessage;
+  if (Platform.isAndroid) _handleMessage(message);
+
+  return;
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   final auth = FirebaseAuth.instance;
@@ -107,18 +123,21 @@ void main() async {
       error: true,
     ));
   }
+
   final firebaseMessaging = FirebaseMessaging.instance;
 
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-          create: (context) => AuthProvider(auth, reference)),
-      ChangeNotifierProvider(
-          create: (context) =>
-              HomeProvider(firebaseMessaging, auth, reference, dio)),
-    ],
-    child: MyApp(),
-  ));
+  runZonedGuarded<Future<void>>(() async {
+    runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => AuthProvider(auth, reference)),
+        ChangeNotifierProvider(
+            create: (context) =>
+                HomeProvider(firebaseMessaging, auth, reference, dio)),
+      ],
+      child: MyApp(),
+    ));
+  }, FirebaseCrashlytics.instance.recordError);
 }
 
 class MyApp extends StatelessWidget {
@@ -128,14 +147,46 @@ class MyApp extends StatelessWidget {
     return inDebugMode;
   }
 
+  void initFCM(BuildContext context) async {
+    await Future.wait([
+      FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      ),
+      FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      )
+    ]);
+
+    FirebaseMessaging.onMessage.listen(_handleMessage);
+    FirebaseMessaging.onMessageOpenedApp
+        .listen((remoteMessage) => _openHomePage(remoteMessage, context));
+    // FirebaseMessaging.instance
+    //     .getInitialMessage()
+    //     .then((remoteMessage) => _openHomePage(remoteMessage, context));
+  }
+
+  void _openHomePage(RemoteMessage? remoteMessage, BuildContext context) {
+    final payload = remoteMessage?.data;
+    print(
+        "${Platform.isIOS ? 'iOS' : Platform.isAndroid ? 'Android' : ''}: $payload");
+
+    Navigator.pushNamed(context, HomePage.route);
+  }
+
   @override
   Widget build(BuildContext context) {
+    initFCM(context);
+
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 1), () async {
-          FirebaseMessaging.onMessage.listen((event) {
-            _handleMessage(event.data);
-          });
-        }),
+        future: Future.delayed(Duration(seconds: 1), () {}),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return OopsWidget();
